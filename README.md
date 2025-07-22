@@ -9,5 +9,3 @@ You should configure the following variables:
 const validSessionToken = '****';
 const webViewUrl = 'https://demo.dev.perfect.live/sdk/webview'
 ```
-
-Both `theme` and `locale` are optional and can be omitted if not needed.
