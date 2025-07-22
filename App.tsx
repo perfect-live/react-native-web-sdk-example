@@ -40,19 +40,21 @@ type Variant = {
   defaultLocale: Locale;
   onSessionExpired: () => Promise<{token: string}>;
 };
+
+const validSessionToken = 'BnHBKWqwi_Ojh3MkhmJMiHbyn66kTwFj';
+const webViewUrl = 'https://demo.dev.perfect.live/sdk/webview';
+
 const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
-  const validSessionToken = 'BnHBKWqwi_Ojh3MkhmJMiHbyn66kTwFj';
   const expiredSessionToken = 'JYek_J_9uK3oL362KjQy9nUQN_-tXBH1';
   const prolongateSession = async () => {
     return {
-      token: 'BnHBKWqwi_Ojh3MkhmJMiHbyn66kTwFj',
+      token: validSessionToken,
     };
   };
   const variants = [
     {
       name: 'Threads & events Light Theme (en_US)',
-      webViewUrl:
-        'https://demo.dev.perfect.live/sdk/webview?locale=en_US&theme=light&layout=all',
+      webViewUrl: webViewUrl + '?locale=en_US&theme=light&layout=all',
       token: validSessionToken,
       defaultTheme: 'light' as Theme,
       defaultLocale: 'en_US' as Locale,
@@ -60,8 +62,7 @@ const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
     },
     {
       name: 'Threads & events Dark Theme (ru_RU)',
-      webViewUrl:
-        'https://demo.dev.perfect.live/sdk/webview?locale=ru_RU&theme=dark&layout=all',
+      webViewUrl: webViewUrl + '?locale=ru_RU&theme=dark&layout=all',
       token: validSessionToken,
       defaultTheme: 'dark' as Theme,
       defaultLocale: 'ru_RU' as Locale,
@@ -69,8 +70,7 @@ const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
     },
     {
       name: 'Only threads',
-      webViewUrl:
-        'https://demo.dev.perfect.live/sdk/webview?locale=en_US&theme=light&layout=threads-list',
+      webViewUrl: webViewUrl + '?locale=en_US&theme=light&layout=threads-list',
       token: validSessionToken,
       defaultTheme: 'light' as Theme,
       defaultLocale: 'en_US' as Locale,
@@ -78,8 +78,7 @@ const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
     },
     {
       name: 'Only events',
-      webViewUrl:
-        'https://demo.dev.perfect.live/sdk/webview?locale=en_US&theme=light&layout=events-list',
+      webViewUrl: webViewUrl + '?locale=en_US&theme=light&layout=events-list',
       token: validSessionToken,
       defaultTheme: 'light' as Theme,
       defaultLocale: 'en_US' as Locale,
@@ -87,8 +86,7 @@ const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
     },
     {
       name: 'Error (wrong token)',
-      webViewUrl:
-        'https://demo.dev.perfect.live/sdk/webview?locale=en_US&theme=light',
+      webViewUrl: webViewUrl + '?locale=en_US&theme=light',
       token: 'fake_token',
       defaultTheme: 'light' as Theme,
       defaultLocale: 'en_US' as Locale,
@@ -96,8 +94,7 @@ const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
     },
     {
       name: 'Error: expired session',
-      webViewUrl:
-        'https://demo.dev.perfect.live/sdk/webview?locale=en_US&theme=light',
+      webViewUrl: webViewUrl + '?locale=en_US&theme=light',
       token: expiredSessionToken,
       defaultTheme: 'light' as Theme,
       defaultLocale: 'en_US' as Locale,
