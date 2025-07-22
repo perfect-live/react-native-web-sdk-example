@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {Alert} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 
 import {WebView} from 'react-native-webview';
 
@@ -52,15 +52,10 @@ export const PerfectLiveSDKWrapper = (props: {
   useEffect(() => {
     sendEventIntoWebView(webviewRef, 'setLocale', props.locale);
   }, [webviewRef, props.locale]);
-  const style = useMemo(() => {
-    return {
-      flex: 1,
-      backgroundColor: props.theme === 'dark' ? '#000' : '#fff',
-    };
-  }, [props.theme]);
 
   const onBack = props.onBack;
   const onSessionExpired = props.onSessionExpired;
+  const [loading, setLoading] = useState(true);
   const onPerfectLiveSDKMessage = useCallback(
     (event: any) => {
       const data = event.nativeEvent.data;
@@ -89,20 +84,46 @@ export const PerfectLiveSDKWrapper = (props: {
     [onBack, onSessionExpired],
   );
   return (
-    <WebView
-      ref={webviewRef}
-      source={webViewSource}
-      style={style}
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
-      allowFileAccess={true}
-      allowUniversalAccessFromFileURLs={true}
-      sharedCookiesEnabled={true}
-      thirdPartyCookiesEnabled={true}
-      originWhitelist={['*']}
-      startInLoadingState={true}
-      allowsBackForwardNavigationGestures={true}
-      onMessage={onPerfectLiveSDKMessage}
-    />
+    <View style={styles.container}>
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      )}
+      <WebView
+        ref={webviewRef}
+        source={webViewSource}
+        style={styles.webview}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+        allowFileAccess={true}
+        allowUniversalAccessFromFileURLs={true}
+        onLoadStart={() => setLoading(true)}
+        onLoadEnd={() => setLoading(false)}
+        sharedCookiesEnabled={true}
+        thirdPartyCookiesEnabled={true}
+        originWhitelist={['*']}
+        startInLoadingState={true}
+        allowsBackForwardNavigationGestures={true}
+        onMessage={onPerfectLiveSDKMessage}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#171717',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+});

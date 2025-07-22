@@ -9,13 +9,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: 'white',
+    backgroundColor: '#2a2a2a',
+
     padding: 20,
     marginVertical: 2,
     marginHorizontal: 1,
   },
   title: {
     fontSize: 16,
+    color: '#fff',
   },
 });
 
