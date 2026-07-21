@@ -103,6 +103,7 @@ export const PerfectLiveSDKWrapper = (props: {
         sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}
         originWhitelist={['*']}
+        mediaCapturePermissionGrantType="grantIfSameHostElsePrompt"
         startInLoadingState={true}
         allowsBackForwardNavigationGestures={true}
         onMessage={onPerfectLiveSDKMessage}
