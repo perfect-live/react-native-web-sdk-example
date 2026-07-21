@@ -31,5 +31,24 @@ target 'WebViewReact' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # fmt 11.0.2 (bundled with RN 0.79.x) fails to build with the stricter
+    # consteval checks in newer Clang (Xcode 16.3+/26.x): "call to consteval
+    # function ... is not a constant expression". fmt/base.h computes
+    # FMT_USE_CONSTEVAL unconditionally from compiler feature macros with no
+    # override hook, so a -D flag has no effect; patch the header directly to
+    # force the pre-consteval fallback path.
+    fmt_header = File.join(installer.sandbox.pod_dir("fmt").to_s, "include/fmt/base.h")
+    if File.exist?(fmt_header)
+      contents = File.read(fmt_header)
+      patched = contents.sub(
+        "#if FMT_USE_CONSTEVAL\n",
+        "#undef FMT_USE_CONSTEVAL\n#define FMT_USE_CONSTEVAL 0\n#if FMT_USE_CONSTEVAL\n"
+      )
+      if patched != contents
+        File.chmod(0644, fmt_header)
+        File.write(fmt_header, patched)
+      end
+    end
   end
 end

@@ -70,7 +70,9 @@ const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
     },
     {
       name: 'Only threads',
-      webViewUrl: webViewUrl + '?locale=en_US&theme=light&layout=threads-list',
+      webViewUrl:
+        webViewUrl +
+        '?locale=en_US&theme=light&removeNavigationMenu=true&navigationResource=threads',
       token: validSessionToken,
       defaultTheme: 'light' as Theme,
       defaultLocale: 'en_US' as Locale,
@@ -78,7 +80,9 @@ const VariantsList = ({onSelected}: {onSelected: (item: Variant) => void}) => {
     },
     {
       name: 'Only events',
-      webViewUrl: webViewUrl + '?locale=en_US&theme=light&layout=events-list',
+      webViewUrl:
+        webViewUrl +
+        '?locale=en_US&theme=light&removeNavigationMenu=true&navigationResource=events',
       token: validSessionToken,
       defaultTheme: 'light' as Theme,
       defaultLocale: 'en_US' as Locale,
