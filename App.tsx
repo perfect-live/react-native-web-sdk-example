@@ -1,5 +1,6 @@
 import React, {useMemo, useState} from 'react';
-import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View, StatusBar} from 'react-native';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 import {Locale, Theme} from './components/PerfectLiveSDKWrapper';
 import {SDKScreenVariant} from './components/SDKScreenVariant';
@@ -125,20 +126,23 @@ function App(): React.JSX.Element {
     };
   }, [defaultTheme]);
   return (
-    <SafeAreaView style={style}>
-      {selectedVariant ? (
-        <SDKScreenVariant
-          webViewUrl={selectedVariant.webViewUrl}
-          token={selectedVariant.token}
-          defaultTheme={selectedVariant.defaultTheme}
-          defaultLocale={selectedVariant.defaultLocale}
-          onBack={() => setSelectedVariant(null)}
-          onSessionExpired={selectedVariant.onSessionExpired}
-        />
-      ) : (
-        <VariantsList onSelected={setSelectedVariant} />
-      )}
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <StatusBar barStyle="light-content" backgroundColor="#171717" translucent={false} />
+      <SafeAreaView style={style}>
+        {selectedVariant ? (
+          <SDKScreenVariant
+            webViewUrl={selectedVariant.webViewUrl}
+            token={selectedVariant.token}
+            defaultTheme={selectedVariant.defaultTheme}
+            defaultLocale={selectedVariant.defaultLocale}
+            onBack={() => setSelectedVariant(null)}
+            onSessionExpired={selectedVariant.onSessionExpired}
+          />
+        ) : (
+          <VariantsList onSelected={setSelectedVariant} />
+        )}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
