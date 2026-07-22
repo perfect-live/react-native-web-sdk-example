@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Alert, PermissionsAndroid, Platform, StyleSheet, View} from 'react-native';
 
 import {WebView} from 'react-native-webview';
 
@@ -47,8 +47,40 @@ export const PerfectLiveSDKWrapper = (props: {
     };
   }, [props.webViewUrl, props.token]);
   useEffect(() => {
+    const requestPermissions = async () => {
+      if (Platform.OS === 'android') {
+        try {
+          await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+          ]);
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+    };
+    requestPermissions();
+  }, []);
+
+  useEffect(() => {
     sendEventIntoWebView(webviewRef, 'setTheme', props.theme);
   }, [webviewRef, props.theme]);
+  useEffect(() => {
+    const requestPermissions = async () => {
+      if (Platform.OS === 'android') {
+        try {
+          await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+          ]);
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+    };
+    requestPermissions();
+  }, []);
+
   useEffect(() => {
     sendEventIntoWebView(webviewRef, 'setLocale', props.locale);
   }, [webviewRef, props.locale]);
@@ -104,6 +136,11 @@ export const PerfectLiveSDKWrapper = (props: {
         thirdPartyCookiesEnabled={true}
         originWhitelist={['*']}
         mediaCapturePermissionGrantType="grantIfSameHostElsePrompt"
+        allowsInlineMediaPlayback={true}
+        onPermissionRequest={event => {
+          event.preventDefault();
+          webviewRef.current?.grantPermissions(event.nativeEvent.resources);
+        }}
         startInLoadingState={true}
         allowsBackForwardNavigationGestures={true}
         onMessage={onPerfectLiveSDKMessage}
